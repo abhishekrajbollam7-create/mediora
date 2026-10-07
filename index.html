@@ -578,7 +578,17 @@
 <script src="chatbot.js"></script>
 <script>
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').then(reg=>{
+      if(reg && reg.update) reg.update();
+    }).catch(()=>{});
+  });
+  let _swFresh = false;
+  navigator.serviceWorker.addEventListener('controllerchange', ()=>{
+    if(_swFresh) return;
+    _swFresh = true;
+    window.location.reload();
+  });
 }
 </script>
 </body>

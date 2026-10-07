@@ -1,9 +1,15 @@
-const CACHE = 'mediremind-v19';
+const CACHE = 'mediremind-v20';
 const ASSETS = ['./', './index.html', './styles.css', './chatbot.css', './app.js', './chatbot.js', './manifest.webmanifest', './icon.svg', './img/logo.svg', './img/bottle.svg', './img/capsules.svg', './img/tablets.svg'];
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS)).then(()=>self.skipWaiting()));
 });
-self.addEventListener('activate', (e) => { e.waitUntil(self.clients.claim()); });
+self.addEventListener('activate', (e) => {
+  e.waitUntil(
+    caches.keys()
+      .then(keys=>Promise.all(keys.filter(k=>k.indexOf('mediremind-') === 0 && k !== CACHE).map(k=>caches.delete(k))))
+      .then(()=>self.clients.claim())
+  );
+});
 self.addEventListener('fetch', (e) => {
   e.respondWith(caches.match(e.request).then((r) => r || fetch(e.request).catch(()=>caches.match('./index.html'))));
 });
