@@ -1,0 +1,1 @@
+{"background_color": "#ecf7ee", "description": "Mediora — premium medicine reminder and healthcare dashboard.", "display": "standalone", "icons": [{"purpose": "any", "sizes": "any", "src": "icon.svg", "type": "image/svg+xml"}], "name": "Mediora — Healthcare Dashboard", "short_name": "Mediora", "start_url": "./index.html", "theme_color": "#15803d"}

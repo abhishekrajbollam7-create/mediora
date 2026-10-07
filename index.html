@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Mediora Premium — Healthcare Dashboard</title>
+<meta name="description" content="Premium pharmacy-grade medicine reminder and healthcare dashboard." />
+<meta name="theme-color" content="#07130d" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" href="icon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="chatbot.css" />
+</head>
+<body>
+<div class="pharma-bg" aria-hidden="true">
+  <div class="orb orb-a"></div><div class="orb orb-b"></div><div class="orb orb-c"></div>
+  <div class="pharma-pattern"></div>
+  <div class="float-pills">
+    <i class="pill p1"></i><i class="pill p2"></i><i class="pill p3"></i><i class="pill p4"></i>
+    <i class="cross c1">+</i><i class="cross c2">+</i><i class="cross c3">+</i>
+  </div>
+  <div class="bg-photos" aria-hidden="true">
+    <img class="bp bp1" src="img/bottle.svg" alt="" />
+    <img class="bp bp2" src="img/tablets.svg" alt="" />
+    <img class="bp bp3" src="img/capsules.svg" alt="" />
+    <img class="bp bp4" src="img/bottle.svg" alt="" />
+  </div>
+  <div class="grain"></div>
+</div>
+
+<div id="transitionOverlay" aria-hidden="true">
+  <div class="trans-logo"><img src="img/logo.svg" alt="Mediora" /></div>
+  <div class="trans-name">Mediora</div>
+  <div class="trans-bar"><span></span></div>
+  <div class="trans-msg" id="transMsg">Loading…</div>
+</div>
+
+<div class="phone">
+
+<!-- ============ SIGNUP / LOGIN VIEW (unchanged logic) ============ -->
+<div id="authView" class="auth-view" hidden>
+  <div class="auth-stage">
+
+    <aside class="hero-left">
+      <div class="brand-mini">
+        <img class="cap-mark" src="img/logo.svg" alt="Mediora logo" />
+        <div><b>Mediora</b><span>HEALTH · CARE · ALWAYS</span></div>
+      </div>
+      <h1>Better Medicine.<br />Healthier <em>You.</em></h1>
+      <p class="hero-sub">Your trusted companion for medicines, healthcare and a healthier tomorrow.</p>
+      <ul class="hero-feats">
+        <li><i>🔔</i><div><b>Smart Reminders</b><span>Sound · popup · notification</span></div></li>
+        <li><i>💚</i><div><b>Better Health</b><span>For a happier you</span></div></li>
+      </ul>
+    </aside>
+
+    <div class="auth-wrap view-enter">
+      <div class="auth-card">
+        <div class="auth-tabs">
+          <button id="tabSignup" class="auth-tab active" type="button">Sign up</button>
+          <button id="tabLogin" class="auth-tab" type="button">Log in</button>
+          <span id="tabSlider" class="tab-slider"></span>
+        </div>
+
+        <form id="signupForm" class="auth-form" autocomplete="off">
+          <h2 class="form-title">Create Your <em>Account</em></h2>
+          <p class="muted small form-sub">Take the first step towards a healthier you</p>
+          <div class="field">
+            <label for="suName">Full Name</label>
+            <div class="in-row"><span class="ic">👤</span><input id="suName" required maxlength="40" placeholder="Enter your full name" autocomplete="name" /></div>
+          </div>
+          <div class="field">
+            <label for="suEmail">Email Address</label>
+            <div class="in-row"><span class="ic">✉️</span><input id="suEmail" type="email" required maxlength="80" placeholder="Enter your email address" autocomplete="email" /></div>
+          </div>
+          <div class="field">
+            <label for="suPhone">Phone Number</label>
+            <div class="in-row"><span class="ic">📞</span><input id="suPhone" type="tel" maxlength="18" placeholder="+91 98765 43210" autocomplete="tel" /></div>
+          </div>
+          <div class="field">
+            <label for="suPass">Password</label>
+            <div class="in-row"><span class="ic">🔒</span><input id="suPass" type="password" required minlength="4" maxlength="64" placeholder="Create a strong password" autocomplete="new-password" /><button type="button" class="pw-eye" data-for="suPass" title="Show password">👁</button></div>
+          </div>
+          <div class="field">
+            <label for="suConfirm">Confirm Password</label>
+            <div class="in-row"><span class="ic">🔒</span><input id="suConfirm" type="password" required minlength="4" maxlength="64" placeholder="Re-enter your password" autocomplete="new-password" /><button type="button" class="pw-eye" data-for="suConfirm" title="Show password">👁</button></div>
+          </div>
+          <label class="terms"><input type="checkbox" id="termsChk" /> <span>I agree to the <span class="tlink">Terms &amp; Conditions</span> and <span class="tlink">Privacy Policy</span></span></label>
+          <div id="signupMsg" class="auth-msg" role="alert"></div>
+          <button type="submit" class="btn primary big w100 glow">Sign Up &nbsp;→</button>
+          <div class="or"><span>OR</span></div>
+          <div class="social-row">
+            <button type="button" class="soc gsocial"><span class="g-badge">G</span>Continue with Google</button>
+            <button type="button" class="soc asocial"><svg viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>Continue with Apple</button>
+          </div>
+          <p class="muted small center">Already have an account? <a href="#" id="goLogin">Log In</a></p>
+        </form>
+
+        <form id="loginForm" class="auth-form" autocomplete="off" hidden>
+          <h2 class="form-title">Welcome <em>Back</em></h2>
+          <p class="muted small form-sub">Log in to your medicine cabinet</p>
+          <div class="field">
+            <label for="liEmail">Email Address</label>
+            <div class="in-row"><span class="ic">✉️</span><input id="liEmail" type="email" required placeholder="demo@mediora.app" autocomplete="email" /></div>
+          </div>
+          <div class="field">
+            <label for="liPass">Password</label>
+            <div class="in-row"><span class="ic">🔒</span><input id="liPass" type="password" required placeholder="demo1234" autocomplete="current-password" /><button type="button" class="pw-eye" data-for="liPass" title="Show password">👁</button></div>
+          </div>
+          <div id="loginMsg" class="auth-msg" role="alert"></div>
+          <button type="submit" class="btn primary big w100 glow">✔ Log In</button>
+          <div class="demo-box">
+            <div><b>Try the demo</b><span>demo@mediora.app · demo1234</span></div>
+            <button type="button" id="demoBtn" class="btn small glossy">Use demo</button>
+          </div>
+          <p class="muted small center">New here? <a href="#" id="goSignup">Create an account</a></p>
+        </form>
+        <p class="secure-note">🔒 Stored only on this device · No servers · PWA installable</p>
+      </div>
+    </div>
+
+    <aside class="hero-right">
+      <p class="script">Your Health<br />Our Priority</p>
+      <div class="rail-card"><i>💊</i><div><b>Wide Range</b><span>Tablets, Syrups, Capsules &amp; more</span></div></div>
+      <div class="rail-card"><i>🎧</i><div><b>Expert Support</b><span>Pharmacist assistance 24/7</span></div></div>
+      <div class="rail-card"><i>🛡️</i><div><b>Safe &amp; Secure</b><span>Your data is always protected</span></div></div>
+      <p class="rail-foot">HEALTH IS A<br />BEAUTIFUL JOURNEY</p>
+    </aside>
+
+  </div>
+  <p class="maker">MADE BY <span>ABHISHEK</span></p>
+</div>
+
+<!-- ============ APP: SIDEBAR + DASHBOARD ============ -->
+<div id="appView" hidden>
+<div class="app-shell">
+
+  <!-- sidebar removed: all navigation lives in the topbar menu + tab bar -->
+
+  <div class="main">
+    <header class="topbar">
+      <button class="icon-btn" id="sideToggle" type="button" title="Menu">☰</button>
+      <div class="top-brand"><img class="logo-mark-img" src="img/logo.svg" alt="Mediora logo" /><span class="top-brand-t">Mediora</span></div>
+      <div class="top-actions">
+        <button class="icon-btn" id="themeBtn" type="button" title="Switch theme">🌙</button>
+        <button id="installBtn" class="icon-btn" hidden>📲</button>
+        <button class="icon-btn bell" id="notifBtn" type="button" title="Notifications">🔔<i class="dot" id="notifDot" hidden></i></button>
+        <button class="icon-btn" id="helpBtn" type="button" title="Help">❓</button>
+        <button class="nav-user" id="navUserBtn" type="button"><span id="userChip" class="avatar" title="Signed in user">🌿</span><span id="navUserName">User</span><span class="caret">▾</span></button>
+        <div class="dropdown" id="userDrop">
+          <button id="ddProfile" type="button">👤 My Profile</button>
+          <button id="ddSettings" type="button">⚙️ Settings</button>
+          <button id="ddLogout" type="button">⏻ Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="pages">
+
+      <!-- HOME -->
+      <section class="page" id="page-home">
+        <div class="verify-banner" id="verifyBanner" hidden><span>⚠️ Please verify your email to secure your Mediora account.</span><button class="btn small glossy" id="verifyOpen" type="button">Verify now</button></div>
+        <div class="welcome card">
+          <div class="ava-wrap">
+            <img id="profPhoto" class="prof-photo-img" alt="Profile photo" hidden />
+            <span id="profInitial">🌿</span>
+            <button id="photoChange" class="ava-edit" type="button" title="Upload / change photo">📷</button>
+          </div>
+          <div class="welcome-info">
+            <p class="hello"><span id="dayPart">Good Morning</span>, <span id="helloName">friend</span> 👋</p>
+            <p class="muted small tagline-sub">Take care of your health, one day at a time.</p>
+            <div class="meta-chips">
+              <span id="wAge">Age –</span><span id="wGender">–</span><span id="wBlood">–</span><span id="wLoc">–</span><span id="wVerified" class="vbadge" hidden>✔ Verified</span>
+            </div>
+            <p class="muted small" id="wContact">–</p>
+          </div>
+          <button class="btn secondary glass" id="editProfileBtn" type="button">✏️ Edit Profile</button>
+          <input type="file" id="photoInput" accept="image/*" hidden />
+        </div>
+
+        <section class="card med-tracker stagger" id="secTrack">
+          <div class="card-head"><h2><span class="h-icon">📊</span> Medicine Tracker</h2><span class="pill-count" id="trackCount">0 / 0 taken</span></div>
+          <p class="muted small">What you're taking today — tap a time to mark it taken.</p>
+          <div class="track-next" id="trackNext"></div>
+          <div id="trackList" class="track-med-list"></div>
+        </section>
+
+        <div class="card">
+          <div class="card-head"><h2><span class="h-icon">⚡</span> Quick Actions</h2></div>
+          <div class="qa-grid">
+            <button type="button" data-go="orders">🛒<span>Order Medicine</span></button>
+            <button type="button" data-go="medicines" data-focus="medName">➕<span>Add Medicine</span></button>
+            <button type="button" data-go="medicines">⏰<span>Set Reminder</span></button>
+            <button type="button" data-go="orders">🧾<span>View Orders</span></button>
+          </div>
+        </div>
+
+        <section class="card stagger" id="secAppt">
+          <div class="card-head"><h2><span class="h-icon">📅</span> Next Appointment</h2><span class="pill-count" id="apptCount">–</span></div>
+          <div id="apptList" class="appt-list"></div>
+          <button class="btn small secondary" id="apToggle" type="button">＋ Add appointment</button>
+          <div id="apFormWrap" hidden>
+            <div class="grid2">
+              <div class="field"><label for="apName">Doctor / clinic *</label><input id="apName" maxlength="60" placeholder="e.g. Dr. Rao" /></div>
+              <div class="field"><label for="apFor">Purpose</label><input id="apFor" maxlength="80" placeholder="e.g. General checkup" /></div>
+              <div class="field"><label for="apDate">Date *</label><input id="apDate" type="date" /></div>
+              <div class="field"><label for="apTime">Time</label><input id="apTime" type="time" /></div>
+            </div>
+            <div class="field"><label for="apNote">Note</label><input id="apNote" maxlength="120" placeholder="e.g. bring reports" /></div>
+            <div class="form-actions"><button class="btn primary" id="apSave" type="button">💾 Save appointment</button></div>
+          </div>
+        </section>
+
+        <section class="card shelf stagger">
+          <div class="card-head"><h2><span class="h-icon">🧬</span> My cabinet</h2></div>
+          <div class="shelf-row">
+            <div class="shelf-item" data-sector="syrup" role="button" tabindex="0" title="Show bottles &amp; syrups"><img src="img/bottle.svg" alt="Bottles" /><span>Bottles</span></div>
+            <div class="shelf-item" data-sector="capsules" role="button" tabindex="0" title="Show capsules"><img src="img/capsules.svg" alt="Capsules" /><span>Capsules</span></div>
+            <div class="shelf-item" data-sector="tablets" role="button" tabindex="0" title="Show tablets"><img src="img/tablets.svg" alt="Tablets" /><span>Tablets</span></div>
+          </div>
+        </section>
+      </section>
+
+      <!-- DASHBOARD (separate analytics section) -->
+      <section class="page" id="page-dashboard" hidden>
+        <div class="dash-head">
+          <h2>📊 Dashboard</h2>
+          <p class="muted small">Your health at a glance</p>
+        </div>
+
+        <div class="stat-grid">
+          <button class="stat-card" data-go="medicines" type="button"><i>💊</i><div><b id="statMeds">0</b><span>Active Medicines</span></div></button>
+          <button class="stat-card" data-go="reminders" type="button"><i>⏰</i><div><b id="statNext">–</b><span>Upcoming Reminder</span></div></button>
+          <button class="stat-card" data-go="orders" type="button"><i>🧾</i><div><b id="statOrders">0</b><span>Active Orders</span></div></button>
+        </div>
+
+        <div class="card chart-card">
+          <div class="card-head"><h2><span class="h-icon">📈</span> Health Progress</h2><span class="muted small">7-day adherence</span></div>
+          <canvas id="adhChart" height="190"></canvas>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h2><span class="h-icon">🕘</span> Recent Activity</h2></div>
+          <div id="actList" class="act-list"></div>
+        </div>
+      </section>
+
+      <!-- PROFILE -->
+      <section class="page" id="page-profile" hidden>
+        <div class="card prof-top">
+          <div class="ava-wrap big">
+            <img id="profPhoto2" class="prof-photo-img" alt="Profile photo" hidden />
+            <span id="profInitial2">🌿</span>
+            <button id="photoChange2" class="ava-edit" type="button" title="Upload / change photo">📷</button>
+          </div>
+          <div class="welcome-info">
+            <h2 id="pfHeadName">–</h2>
+            <p class="muted small" id="pfHeadSub">–</p>
+            <p style="margin:6px 0 0"><span id="pfVerified" class="vbadge" hidden>✔ Verified email</span></p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h2><span class="h-icon">👤</span> Personal Information</h2></div>
+          <div class="grid2">
+            <div class="field"><label for="pfName">Full name *</label><input id="pfName" maxlength="40" placeholder="Your full name" /></div>
+            <div class="field"><label for="pfEmail">Email (login ID)</label><input id="pfEmail" readonly title="Email cannot be changed" /></div>
+            <div class="field"><label for="pfPhone">Phone *</label><input id="pfPhone" type="tel" maxlength="18" placeholder="+91 98765 43210" /></div>
+            <div class="field"><label for="pfDob">Date of birth</label><input id="pfDob" type="date" /></div>
+            <div class="field"><label for="pfGender">Gender</label><select id="pfGender"><option value="">Select…</option><option>Male</option><option>Female</option><option>Other</option><option>Prefer not to say</option></select></div>
+            <div class="field"><label for="pfBlood">Blood group</label><select id="pfBlood"><option value="">Select…</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>O+</option><option>O-</option><option>AB+</option><option>AB-</option></select></div>
+          </div>
+          <div class="field"><label for="pfAddr">Address</label><input id="pfAddr" maxlength="120" placeholder="Street, city, PIN" /></div>
+          <div class="grid2">
+            <div class="field"><label for="pfEmerg">Emergency contact</label><input id="pfEmerg" maxlength="60" placeholder="Name · phone" /></div>
+            <div class="field"><label for="pfLoc">Location</label><input id="pfLoc" maxlength="60" placeholder="City" /></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h2><span class="h-icon">❤️</span> Health Information</h2></div>
+          <div class="grid2">
+            <div class="field"><label for="pfAllerg">Allergies</label><input id="pfAllerg" maxlength="120" placeholder="e.g. Penicillin, peanuts" /></div>
+            <div class="field"><label for="pfCond">Medical conditions</label><input id="pfCond" maxlength="120" placeholder="e.g. Hypertension" /></div>
+          </div>
+          <p class="muted small">Current medications are managed on the <a href="#" id="goMeds">Medicines page</a>.</p>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h2><span class="h-icon">🔐</span> Account Security</h2></div>
+          <form id="cpForm" autocomplete="off">
+            <div class="grid2">
+              <div class="field"><label for="cpOld">Current password</label><input id="cpOld" type="password" placeholder="••••••••" autocomplete="current-password" /></div>
+              <div class="field"><label for="cpNew">New password</label><input id="cpNew" type="password" minlength="4" placeholder="min 4 chars" autocomplete="new-password" /></div>
+            </div>
+            <div id="cpMsg" class="auth-msg" role="alert"></div>
+            <button type="submit" class="btn secondary">Change password</button>
+          </form>
+          <label class="switch-row"><span>🔑 Two-factor authentication</span><span class="switch"><input type="checkbox" data-pref="twofa" /><i></i></span></label>
+          <h3 class="sub-h">Login activity</h3>
+          <div id="loginActList" class="act-list"></div>
+          <h3 class="sub-h">Connected devices</h3>
+          <div class="dev-row"><span>💻</span><div><b>This browser</b><span class="muted small">Current session · trusted</span></div></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h2><span class="h-icon">🔔</span> Preferences</h2></div>
+          <label class="switch-row"><span>⏰ Medicine reminders</span><span class="switch"><input type="checkbox" data-pref="reminders" /><i></i></span></label>
+          <label class="switch-row"><span>🔊 Sounds &amp; alerts</span><span class="switch"><input type="checkbox" data-pref="sound" /><i></i></span></label>
+          <label class="switch-row"><span>📧 Email notifications</span><span class="switch"><input type="checkbox" data-pref="email" /><i></i></span></label>
+          <label class="switch-row"><span>🌙 Light theme</span><span class="switch"><input type="checkbox" data-pref="theme" /><i></i></span></label>
+          <div class="field"><label for="pfLang">Language</label><select data-pref="lang" id="pfLang"><option>English</option><option>Hindi</option><option>Spanish</option><option>French</option></select></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h2><span class="h-icon">🛡️</span> Privacy &amp; Security</h2></div>
+          <label class="switch-row"><span>👁️ Private profile</span><span class="switch"><input type="checkbox" data-pref="private" /><i></i></span></label>
+          <label class="switch-row"><span>📊 Share anonymous usage data</span><span class="switch"><input type="checkbox" data-pref="analytics" /><i></i></span></label>
+          <div class="form-actions">
+            <button class="btn secondary" id="dlData" type="button">⬇ Download my data</button>
+            <button class="btn danger" id="delAccount" type="button">Delete account</button>
+          </div>
+        </div>
+
+        <div class="form-actions sticky-save">
+          <button class="btn primary" id="pfSave" type="button">💾 Save Changes</button>
+          <button class="btn secondary" id="pfCancel" type="button">Cancel</button>
+        </div>
+        <div id="pfMsg" class="auth-msg" role="alert"></div>
+      </section>
+
+      <!-- MEDICINES -->
+      <section class="page" id="page-medicines" hidden>
+        <div class="searchbar">🔍<input id="searchInput" type="search" placeholder="Search tablets, herbs…" autocomplete="off" /></div>
+        <div class="user-strip card">
+          <label for="userName">💠 Taking medicines for:</label>
+          <input id="userName" type="text" placeholder="e.g. Dad / Me" autocomplete="name" />
+        </div>
+        <section class="card" id="secAdd">
+          <div class="card-head"><h2><span class="h-icon">➕</span> Add tablet / medicine</h2></div>
+          <p class="muted small">Add one tablet at a time. Use “+ Add time” for multiple daily doses.</p>
+          <form id="medForm" autocomplete="off">
+            <div class="grid2">
+              <div class="field"><label for="medName">Tablet / medicine name *</label><input id="medName" required maxlength="60" placeholder="e.g. Ashwagandha Capsules" /></div>
+              <div class="field"><label for="medDose">Dosage / quantity</label><input id="medDose" maxlength="40" placeholder="e.g. 1 capsule after food" /></div>
+            </div>
+            <div class="field"><label>Medicine form</label><div class="type-row" id="typeRow"><span class="type-ind" id="typeInd" aria-hidden="true"></span><button type="button" class="type-chip active" data-v="tablets">💊 Tablets</button><button type="button" class="type-chip" data-v="capsules">💊 Capsules</button><button type="button" class="type-chip" data-v="syrup">🍼 Syrup</button><button type="button" class="type-chip" data-v="other">📦 Other</button></div><input type="hidden" id="medType" value="tablets" /></div>
+            <div class="field"><label>Times per day *</label><div id="timeInputs"></div><button type="button" id="addTimeBtn" class="btn small secondary">+ Add time</button></div>
+            <div class="field"><label>Repeat</label><div class="seg-row"><button type="button" id="repDaily" class="seg active">🔁 Daily</button><button type="button" id="repDates" class="seg">📅 Specific dates</button></div></div>
+            <div class="field" id="dateWrap" hidden><label>Pick the days to get reminded</label><div class="cal-card"><div class="cal-head"><button type="button" id="calPrev" class="icon-btn sm">‹</button><b id="calTitle"></b><button type="button" id="calNext" class="icon-btn sm">›</button></div><div class="cal-dow"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div><div class="cal-grid" id="calGrid"></div></div><div id="dayChips" class="day-chips"></div><button type="button" id="dayClear" class="btn small secondary">Clear dates</button></div>
+            <div class="field"><label for="medNote">Note (optional)</label><input id="medNote" maxlength="120" placeholder="e.g. after breakfast, with water" /></div>
+            <div class="grid2">
+              <div class="field"><label for="medStock">No. of tablets (stock)</label><input id="medStock" type="number" min="0" max="10000" placeholder="e.g. 30" /></div>
+              <div class="field"><label>&nbsp;</label><div class="stock-hint muted small">Used &amp; remaining auto-count from your taken log.</div></div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn primary" id="saveBtn">➕ Add tablet</button>
+              <button type="button" class="btn secondary" id="cancelEditBtn" hidden>Cancel</button>
+            </div>
+          </form>
+        </section>
+        <section class="card" id="secList">
+          <div class="card-head"><h2><span class="h-icon">💊</span> My tablets (<span id="medCount">0</span>)</h2><button id="testSoundBtn" class="btn small secondary">🔊 Test</button></div>
+          <div id="medList" class="med-list"></div>
+        </section>
+      </section>
+
+      <!-- ORDERS -->
+      <section class="page" id="page-orders" hidden>
+        <div class="card"><div class="card-head"><h2><span class="h-icon">🧾</span> My Orders</h2></div><div id="orderList" class="order-list"></div></div>
+      </section>
+
+      <!-- PRESCRIPTIONS -->
+      <section class="page" id="page-rx" hidden>
+        <div class="card">
+          <div class="card-head"><h2><span class="h-icon">📄</span> Prescriptions</h2><label class="btn small secondary file-btn">⬆ Upload<input type="file" id="rxFile" hidden /></label></div>
+          <p class="muted small">Files stay in this browser — only the name &amp; date are remembered.</p>
+          <div id="rxList" class="rx-list"></div>
+        </div>
+      </section>
+
+      <!-- REMINDERS -->
+      <section class="page" id="page-reminders" hidden>
+        <div class="chip-row card">
+          <span class="chip-indicator" id="chipIndicator" aria-hidden="true"></span>
+          <button class="chip active" data-f="all" type="button">All</button>
+          <button class="chip" data-f="due" type="button">Due</button>
+          <button class="chip" data-f="upcoming" type="button">Upcoming</button>
+          <button class="chip" data-f="taken" type="button">Taken</button>
+        </div>
+        <section class="card" id="secToday">
+          <div class="card-head"><h2><span class="h-icon">📅</span> Today's schedule</h2><span id="todayDate" class="muted small"></span></div>
+          <div id="progressWrap" class="progress-wrap"><div class="progress-bar"><div id="progressFill"></div></div><div id="progressText" class="muted small" style="margin-top:6px">0 / 0 taken</div></div>
+          <div id="todayList" class="schedule-list"></div>
+        </section>
+        <section class="card muted-card premium-foot">
+          <h3>💎 Reminder suite</h3>
+          <ul class="small">
+            <li>✅ In-app highlight + popup when a tablet is due</li>
+            <li>🔊 Sound alarm (keep this tab open, click “Enable alerts” once)</li>
+            <li>📣 System notification on mobile + desktop</li>
+            <li>💾 Saved per-account in this browser — offline-ready</li>
+          </ul>
+        </section>
+      </section>
+
+      <!-- HEALTH RECORDS -->
+      <section class="page" id="page-records" hidden>
+        <div class="card"><div class="card-head"><h2><span class="h-icon">📁</span> Health Records</h2><span class="muted small">Synced from your profile</span></div><div id="recGrid" class="rec-grid"></div></div>
+      </section>
+
+      <!-- NOTIFICATIONS -->
+      <section class="page" id="page-notifs" hidden>
+        <div class="card">
+          <div class="card-head"><h2><span class="h-icon">🔔</span> Notifications</h2><button id="enableSoundBtn2" class="btn small secondary">🔔 Enable alerts</button></div>
+          <div id="notifList" class="act-list"></div>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section class="page" id="page-settings" hidden>
+        <div class="card">
+          <div class="card-head"><h2><span class="h-icon">⚙️</span> Settings</h2></div>
+          <label class="switch-row"><span>🌙 Light theme</span><span class="switch"><input type="checkbox" data-pref="theme" /><i></i></span></label>
+          <div class="field"><label for="setLang">Language</label><select data-pref="lang" id="setLang"><option>English</option><option>Hindi</option><option>Spanish</option><option>French</option></select></div>
+          <label class="switch-row"><span>⏰ Medicine reminders</span><span class="switch"><input type="checkbox" data-pref="reminders" /><i></i></span></label>
+          <label class="switch-row"><span>🔊 Sounds &amp; alerts</span><span class="switch"><input type="checkbox" data-pref="sound" /><i></i></span></label>
+          <label class="switch-row"><span>📧 Email notifications</span><span class="switch"><input type="checkbox" data-pref="email" /><i></i></span></label>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2><span class="h-icon">💾</span> Your Data</h2></div>
+          <div class="form-actions">
+            <button class="btn secondary" id="dlData2" type="button">⬇ Download my data</button>
+            <button class="btn danger" id="delAccount2" type="button">Delete account</button>
+          </div>
+          <p class="muted small center">Mediora Premium · v2.0 · offline-first PWA</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<nav class="tabbar">
+  <span class="tab-indicator" id="tabIndicator" aria-hidden="true"></span>
+  <button class="active" data-page="home" type="button">🏠<span>Home</span></button>
+  <button data-page="medicines" type="button">➕<span>Add</span></button>
+  <button data-page="reminders" type="button">💊<span>Doses</span></button>
+  <button data-page="dashboard" type="button">📊<span>Dashboard</span></button>
+</nav>
+
+<div class="mscrim" id="menuScrim"></div>
+<div class="navmenu" id="navMenu">
+  <button class="nav-item active" data-page="home" type="button">🏠<span>Home</span></button>
+  <button class="nav-item" data-page="dashboard" type="button">📊<span>Dashboard</span></button>
+  <button class="nav-item" data-page="profile" type="button">👤<span>My Profile</span></button>
+  <button class="nav-item" data-page="medicines" type="button">💊<span>Medicines</span></button>
+  <button class="nav-item" data-page="orders" type="button">🧾<span>Orders</span></button>
+  <button class="nav-item" data-page="rx" type="button">📄<span>Prescriptions</span></button>
+  <button class="nav-item" data-page="reminders" type="button">⏰<span>Reminders</span></button>
+  <button class="nav-item" data-page="records" type="button">📁<span>Health Records</span></button>
+  <button class="nav-item" data-page="notifs" type="button">🔔<span>Notifications</span></button>
+  <button class="nav-item" data-page="settings" type="button">⚙️<span>Settings</span></button>
+  <button class="nav-item nav-logout" id="logoutBtn" type="button">⏻<span>Logout</span></button>
+</div>
+
+<button id="aiFab" class="ai-fab" type="button" title="Ask MediCare AI">🤖<i class="fab-dot" id="aiFabDot" hidden></i><span class="tip">Ask MediCare AI</span></button>
+
+<div class="ai-panel" id="aiPanel" hidden>
+  <div class="ai-head">
+    <span class="ai-ava">🤖</span>
+    <div><b>MediCare AI</b><span><i class="online"></i>Your personal medicine &amp; health assistant</span></div>
+    <button class="ai-hbtn" id="aiHist" type="button" title="Recent conversations">🕘</button>
+    <button class="ai-hbtn" id="aiMin" type="button" title="Minimize">–</button>
+    <button class="ai-hbtn" id="aiClose" type="button" title="Close">✕</button>
+  </div>
+  <div class="ai-body">
+    <div id="aiHistView" class="ai-hist" hidden></div>
+    <div id="aiMsgs" class="ai-msgs"></div>
+    <div id="aiTyping" class="ai-typing" hidden><i></i><i></i><i></i>&nbsp;MediCare AI is typing…</div>
+    <div style="text-align:right"><button class="btn small secondary" id="aiNew" type="button">＋ New chat</button></div>
+  </div>
+  <div class="ai-quick" id="aiQuick">
+    <button type="button" data-q="Tell me about my medicines">💊 Medicine Information</button>
+    <button type="button" data-q="Remind me to take Vitamin D3 at 8 PM">⏰ Set a Reminder</button>
+    <button type="button" data-q="Show my prescriptions">📋 My Prescriptions</button>
+    <button type="button" data-q="Where is my order?">📦 Track My Order</button>
+    <button type="button" data-q="Find Vitamin D3">🔍 Find a Medicine</button>
+    <button type="button" data-q="Show my profile">👤 My Profile</button>
+    <button type="button" data-q="Help">❓ Help</button>
+  </div>
+  <div class="ai-inputrow">
+    <button class="ai-ibtn" id="aiAttach" type="button" title="Attach a document or image">📎</button>
+    <input id="aiFile" type="file" accept="image/*,.pdf,.doc,.docx" hidden />
+    <input id="aiText" type="text" placeholder="Ask MediCare AI…" autocomplete="off" />
+    <button class="ai-ibtn" id="aiMic" type="button" title="Voice input">🎤</button>
+    <button class="ai-ibtn ai-send" id="aiSend" type="button" title="Send">➤</button>
+  </div>
+  <p class="ai-disc">MediCare AI provides general health information and is not a substitute for professional medical advice.</p>
+</div>
+</div>
+
+</div><!-- /phone -->
+
+<div class="modal" id="cabModal" hidden>
+  <div class="modal-card">
+    <div class="card-head"><h2 id="cabTitle">💊 Tablets</h2><span class="pill-count" id="cabCount">0</span></div>
+    <div id="cabList" class="cab-list"></div>
+    <div class="modal-actions"><button id="cabClose" class="btn secondary" type="button">Close</button></div>
+  </div>
+</div>
+
+<div class="modal" id="verifyModal" hidden>
+  <div class="modal-card">
+    <div class="alarm-icon">📧</div>
+    <span class="eyebrow">✦ Verify it's you</span>
+    <h2>Check your inbox</h2>
+    <p class="muted small" id="verifyMail">We sent a 6-digit code to your email.</p>
+    <div class="field"><label for="verifyCode">6-digit code</label><input id="verifyCode" inputmode="numeric" maxlength="6" placeholder="••••••" autocomplete="one-time-code" /></div>
+    <div id="verifyMsg" class="auth-msg" role="alert"></div>
+    <div class="modal-actions">
+      <button id="verifyGo" class="btn primary" type="button">✔ Verify</button>
+      <button id="verifySkip" class="btn secondary" type="button">Skip</button>
+    </div>
+    <p class="muted small center" style="margin-top:10px">Didn't get it? <a href="#" id="verifyResend">Resend code</a></p>
+  </div>
+</div>
+
+<div id="toastWrap"></div>
+
+<div id="alarmModal" class="modal" hidden>
+  <div class="modal-card premium-modal">
+    <div class="modal-glow"></div>
+    <div class="alarm-icon">⏰</div>
+    <span class="eyebrow">✦ Dose due now</span>
+    <h2>Time for your medicine!</h2>
+    <div id="alarmList"></div>
+    <div class="modal-actions">
+      <button id="markTakenBtn" class="btn primary">✔ Mark as taken</button>
+      <button id="snoozeBtn" class="btn secondary">😴 Snooze 10 min</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="cropModal" hidden>
+  <div class="modal-card">
+    <h2>Adjust profile photo</h2>
+    <p class="muted small">Drag to position · use the slider to zoom · preview is exactly what gets saved</p>
+    <div class="crop-stage" id="cropStage"><img id="cropImg" alt="Crop preview" /><div class="crop-ring"></div></div>
+    <input type="range" id="cropZoom" min="1" max="3" step="0.01" value="1" aria-label="Zoom" />
+    <div class="modal-actions">
+      <button id="cropSave" class="btn primary" type="button">✔ Save photo</button>
+      <button id="cropCancel" class="btn secondary" type="button">Cancel</button>
+    </div>
+    <button id="photoRemove" class="btn small danger" type="button">Remove photo</button>
+  </div>
+</div>
+
+<div class="modal" id="helpModal" hidden>
+  <div class="modal-card">
+    <h2>❓ Need help?</h2>
+    <ul class="small help-list">
+      <li>➕ Add tablets on the <b>Medicines</b> page with one or more daily times.</li>
+      <li>⏰ Due doses pop up with <b>sound + notification</b> — click the bell in the header once to enable.</li>
+      <li>💊 Mark doses taken from <b>Reminders</b>; track 7-day progress on the <b>Dashboard</b>.</li>
+      <li>👤 Edit profile, change password &amp; export data from <b>My Profile</b>.</li>
+    </ul>
+    <div class="modal-actions"><button id="helpClose" class="btn primary" type="button">Got it ✔</button></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="app.js"></script>
+<script src="chatbot.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+}
+</script>
+</body>
+</html>

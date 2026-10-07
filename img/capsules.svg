@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160">
+  <defs>
+    <linearGradient id="cream" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fffdf4"/><stop offset="1" stop-color="#e8dfc6"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="80" cy="128" rx="52" ry="9" fill="#000" opacity=".3"/>
+  <ellipse cx="168" cy="104" rx="46" ry="8" fill="#000" opacity=".3"/>
+  <ellipse cx="150" cy="140" rx="40" ry="7" fill="#000" opacity=".3"/>
+  <g transform="rotate(-18 80 110)">
+    <rect x="38" y="93" width="84" height="34" rx="17" fill="url(#cream)"/>
+    <rect x="80" y="93" width="42" height="34" rx="0" fill="#10b981"/>
+    <rect x="80" y="93" width="42" height="34" rx="0" fill="#fff" opacity=".18"/>
+    <line x1="80" y1="95" x2="80" y2="125" stroke="#065f39" stroke-width="2"/>
+  </g>
+  <g transform="rotate(14 168 88)">
+    <rect x="126" y="71" width="84" height="34" rx="17" fill="url(#cream)"/>
+    <rect x="168" y="71" width="42" height="34" rx="0" fill="#e9c46a"/>
+    <rect x="168" y="71" width="42" height="34" rx="0" fill="#fff" opacity=".22"/>
+    <line x1="168" y1="73" x2="168" y2="103" stroke="#8a6d1b" stroke-width="2"/>
+  </g>
+  <g transform="rotate(-6 150 128)">
+    <rect x="112" y="111" width="76" height="32" rx="16" fill="url(#cream)"/>
+    <rect x="150" y="111" width="38" height="32" rx="0" fill="#0b3d24"/>
+    <line x1="150" y1="113" x2="150" y2="141" stroke="#4ade80" stroke-width="2"/>
+  </g>
+  <g stroke="#fff" stroke-width="2.5" opacity=".8" stroke-linecap="round">
+    <line x1="208" y1="30" x2="208" y2="44"/><line x1="201" y1="37" x2="215" y2="37"/>
+    <line x1="34" y1="40" x2="34" y2="50"/><line x1="29" y1="45" x2="39" y2="45"/>
+  </g>
+</svg>
