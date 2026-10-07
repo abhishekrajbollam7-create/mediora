@@ -716,7 +716,55 @@ function doDemoLogin(via){
   setTimeout(()=>toast(via === 'google' ? 'Signed in with Google (demo) 🌿' : 'Welcome to the demo! 🌿'), 1250);
 }
 $('demoBtn').onclick = ()=>doDemoLogin('demo');
-document.querySelectorAll('.gsocial').forEach(b=>{ b.onclick = ()=>doDemoLogin('google'); });
+// ---------- real Google sign-in (Google Identity Services) + demo fallback ----------
+// For REAL Google login: Google Cloud Console → APIs & Services → Credentials →
+// Create Credentials → OAuth client ID → Web application → add your site origin
+// (e.g. https://abhishekrajbollam7-create.github.io) to Authorized JavaScript origins,
+// then paste the Client ID below.
+const GOOGLE_CLIENT_ID = '';
+function googleSignIn(){
+  if(GOOGLE_CLIENT_ID && window.google && google.accounts && google.accounts.oauth2){
+    try{
+      const client = google.accounts.oauth2.initTokenClient({
+        client_id: GOOGLE_CLIENT_ID,
+        scope: 'openid email profile',
+        callback: (resp)=>{
+          if(!resp || !resp.access_token){ toast('Google sign-in was cancelled'); return; }
+          fetch('https://www.googleapis.com/oauth2/v3/userinfo', { headers: { Authorization: 'Bearer ' + resp.access_token } })
+            .then(r=>r.json())
+            .then(info=>{
+              if(!info || !info.email) throw 0;
+              googleLocalLogin(info);
+            })
+            .catch(()=>toast('Could not read Google profile — try again'));
+        }
+      });
+      client.requestAccessToken();
+      return;
+    }catch(e){}
+  }
+  toast('Demo mode: add your Google Client ID for real Google sign-in');
+  doDemoLogin('google');
+}
+function googleLocalLogin(info){
+  const email = String(info.email).toLowerCase();
+  const name = info.name || email.split('@')[0];
+  const users = getUsers();
+  let u = users.find(x=>x.email === email);
+  if(!u){
+    u = { name, email, pass: hash('google-' + email), age: '', phone: '', verified: true, provider: 'google', createdAt: Date.now() };
+    users.push(u);
+    save(LS_USERS, users);
+  } else if(!u.verified){ u.verified = true; save(LS_USERS, users); }
+  playTransition('Signing in with Google…', ()=>{
+    currentUser = { name: u.name, email: u.email };
+    setSession(email);
+    seedProfile(); recordLogin(); logAct('👋', 'Signed in with Google', 'system');
+    showApp();
+  });
+  setTimeout(()=>toast('Welcome, ' + u.name + '! 🌿'), 1250);
+}
+document.querySelectorAll('.gsocial').forEach(b=>{ b.onclick = ()=>googleSignIn(); });
 document.querySelectorAll('.asocial').forEach(b=>{ b.onclick = ()=>toast('Apple sign-in needs a server — use Google or demo in this offline build 🍏'); });
 
 // ---------- password eye toggles ----------

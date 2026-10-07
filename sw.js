@@ -1,4 +1,4 @@
-const CACHE = 'mediremind-v18';
+const CACHE = 'mediremind-v19';
 const ASSETS = ['./', './index.html', './styles.css', './chatbot.css', './app.js', './chatbot.js', './manifest.webmanifest', './icon.svg', './img/logo.svg', './img/bottle.svg', './img/capsules.svg', './img/tablets.svg'];
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS)).then(()=>self.skipWaiting()));
