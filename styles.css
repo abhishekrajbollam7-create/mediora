@@ -475,6 +475,7 @@ body.light .cab-row{background:#fff}
 .logo-mark-img{width:42px;height:42px;border-radius:13px;border:1px solid rgba(255,255,255,.28);box-shadow:0 6px 16px rgba(34,197,94,.45);flex:0 0 auto;background:rgba(255,255,255,.06)}
 @media(max-width:640px){
   .top-brand{position:static;transform:none;flex:0 0 auto;max-width:none}
+  .top-brand-t{display:none}
   .top-brand-t{font-size:19px}
   .logo-mark-img{width:32px;height:32px}
   .topbar{gap:8px;padding:10px}
